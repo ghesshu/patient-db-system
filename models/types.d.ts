@@ -1,11 +1,6 @@
 import { Document, Types } from "mongoose";
 
-interface MedDoc {
-  medicine: Types.ObjectId;
-  instruction: string;
-  quantity: string;
-  dosage: "Morning" | "Afternoon" | "Evening";
-}
+
 
 export interface PatientDoc {
   fullname: string;
@@ -18,12 +13,19 @@ export interface PatientDoc {
   records?: Types.ObjectId[];
   info?: {
     bloodgroup: string;
-    weight: number;
-    height: number;
+    weight: string;
+    height: string;
     allergies: string;
     habits: string;
-    mediclhistory: string;
+    medicalhistory: string;
   };
+}
+
+interface MedDoc {
+  medicine: Types.ObjectId;
+  instruction: string;
+  quantity: string;
+  dosage: "Morning" | "Afternoon" | "Evening";
 }
 
 export interface RecordDoc {
@@ -51,6 +53,6 @@ export interface MedicineDoc {
 export interface CampaignDoc {
   title: string;
   subject: string;
-  
+
   message: string;
 }

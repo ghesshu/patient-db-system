@@ -14,7 +14,9 @@ function calculateDaysAgo(date: Date): number {
 
 export async function GET(request: NextRequest) {
   try {
-    const campaigns = await Campaign.find({});
+    const campaigns = await Campaign.find({}).select(
+      "_id title message subject createdAt"
+    );
     const campaignsWithDaysAgo = campaigns.map((campaign) => {
       const daysAgo = calculateDaysAgo(campaign.createdAt);
       return {
@@ -50,7 +52,7 @@ export async function POST(request: NextRequest) {
       message,
     });
 
-    await sendEmail(emailOptions);
+    // await sendEmail(emailOptions);
 
     await newCampaign.save();
 

@@ -43,10 +43,10 @@ const PatientDocSchema = new Schema<PatientDoc>(
         type: String,
       },
       weight: {
-        type: Number,
+        type: String,
       },
       height: {
-        type: Number,
+        type: String,
       },
       allergies: {
         type: String,
@@ -54,7 +54,7 @@ const PatientDocSchema = new Schema<PatientDoc>(
       habits: {
         type: String,
       },
-      mediclhistory: {
+      medicalhistory: {
         type: String,
       },
     },

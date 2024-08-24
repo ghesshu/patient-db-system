@@ -93,7 +93,10 @@ export async function DELETE(request: NextRequest) {
     const id = url.searchParams.get("id"); // Get the ID from query parameters
 
     if (!id) {
-      return res.json({ error: "Treatment ID is required" }, { status: 400 });
+      return res.json(
+        { error: "Treatment ID is required", success: false },
+        { status: 400 }
+      );
     }
 
     // Check if the treatment is present in any record
@@ -101,7 +104,10 @@ export async function DELETE(request: NextRequest) {
 
     if (recordWithTreatment) {
       return res.json(
-        { error: "Treatment cannot be deleted as it is used in a record" },
+        {
+          error: "Treatment cannot be deleted as it is used in a record",
+          success: false,
+        },
         { status: 400 }
       );
     }
@@ -113,7 +119,10 @@ export async function DELETE(request: NextRequest) {
       return res.json({ error: "Treatment not found" }, { status: 404 });
     }
 
-    return res.json({ message: "Treatment deleted successfully" });
+    return res.json({
+      message: "Treatment deleted successfully",
+      success: true,
+    });
   } catch (error) {
     return res.json({ error: "Failed to delete treatment" }, { status: 500 });
   }

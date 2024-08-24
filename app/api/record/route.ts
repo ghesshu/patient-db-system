@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
     });
 
     return res.json({ record: newRecord }, { status: 201 });
-  } catch (error) {
+  } catch (error:any) {
+    // console.log(error.message);
     return res.json({ error: "Failed to create record" }, { status: 500 });
   }
 }

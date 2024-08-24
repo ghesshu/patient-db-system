@@ -15,7 +15,7 @@ const TreatmentDocSchema = new Schema<TreatmentDoc>({
     required: true,
     default: true,
   },
-});
+}, {timestamps: true});
 
 export const Treatment =
   mongoose.models.Treatment ||

@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
           : 0);
       return {
         _id: patient._id,
-        fullnamename: patient.fullname,
+        fullname: patient.fullname,
         phone: patient.phonenumber,
         createdAt: patient.createdAt,
         gender: patient.gender,
@@ -117,8 +117,12 @@ export async function PUT(request: NextRequest) {
       return res.json({ error: "Patient not found" }, { status: 404 });
     }
     return res.json({ patient: updatedPatient });
-  } catch (error) {
-    return res.json({ error: "Failed to update patient" }, { status: 500 });
+  } catch (error: any) {
+    console.log(error.message);
+    return res.json(
+      { error: error.message ? error.message : "Failed to update patient" },
+      { status: 500 }
+    );
   }
 }
 
