@@ -36,6 +36,7 @@
     "@tanstack/react-table": "^8.19.3",
     "@uploadthing/react": "^6.7.2",
     "autoprefixer": "^10.4.19",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "connect": "^3.7.0",
@@ -67,6 +68,7 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/connect": "^3.4.38",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.15",

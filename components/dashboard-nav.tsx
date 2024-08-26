@@ -22,6 +22,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { RiCapsuleLine } from "react-icons/ri";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { MdOutlineMedicalServices } from "react-icons/md";
+import { signOut } from "next-auth/react";
 
 const menu = [
   {
@@ -53,12 +54,6 @@ const menu = [
     href: "/dashboard/campaigns",
     icon: <RiMessage2Line />,
     label: "campaign",
-  },
-  {
-    title: "Logout",
-    href: "/",
-    icon: <IoIosLogOut />,
-    label: "logout",
   },
 ];
 
@@ -110,6 +105,28 @@ export function DashboardNav({
           </Link>
         </div>
       ))}
+      <div className="w-full">
+        <button
+          onClick={() => {
+            if (setOpen) setOpen(false);
+            signOut({ callbackUrl: "/" });
+          }}
+          className={cn(
+            "w-full flex items-center gap-2 overflow-hidden rounded-md py-5 text-sm font-medium hover:bg-primary/10 hover:text-accent-foreground"
+          )}
+        >
+          {/* <Icon className={`ml-3 size-5 flex-none`} /> */}
+          <div className="flex items-center justify-center ml-3 text-xl text-primary ">
+            <IoIosLogOut />
+          </div>
+
+          {isMobileNav || (!isMinimized && !isMobileNav) ? (
+            <span className="mr-2 truncate">Logout</span>
+          ) : (
+            ""
+          )}
+        </button>
+      </div>
     </nav>
   );
 }

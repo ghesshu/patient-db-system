@@ -6,15 +6,93 @@ import connectDB from "@/lib/mongodb";
 // Connect to the database
 connectDB();
 
+// export async function GET(request: NextRequest) {
+//   try {
+//     const url = new URL(request.url);
+//     const gender = url.searchParams.get("gender") || "all"; // Default to 'all'
+//     const dateRange = url.searchParams.get("dateRange");
+//     const sort = url.searchParams.get("sort") || "newest"; // Default to 'newest'
+//     const page = parseInt(url.searchParams.get("page") || "1", 10);
+//     const limit = parseInt(url.searchParams.get("limit") || "20", 10);
+//     const search = url.searchParams.get("search") || ""; // Default to empty search string
+
+//     // Build query filter
+//     let filter: any = {};
+//     if (gender !== "all") {
+//       filter.gender = gender;
+//     }
+
+//     // Handle date range filtering
+//     if (dateRange) {
+//       const [fromDate, toDate] = dateRange
+//         .split(" - ")
+//         .map((dateStr) => new Date(dateStr.trim()));
+//       filter.createdAt = { $gte: fromDate, $lte: toDate };
+//     }
+
+//     // Handle search
+//     if (search) {
+//       const searchRegex = new RegExp(search, "i"); // Case-insensitive search
+//       filter.$or = [{ fullname: searchRegex }, { email: searchRegex }];
+//     }
+
+//     // Handle sorting
+//     const sortOrder = sort === "oldest" ? 1 : -1; // 1 for oldest to newest, -1 for newest to oldest
+
+//     // Pagination
+//     const skip = (page - 1) * limit;
+
+//     const patients = await Patient.find(filter)
+//       .sort({ createdAt: sortOrder })
+//       .skip(skip)
+//       .limit(limit)
+//       .select("_id fullname phonenumber createdAt gender info.bloodgroup dob"); // Explicitly include _id and other required fields
+
+//     // Calculate age and format the response
+//     const patientsWithAge = patients.map((patient) => {
+//       const dob = new Date(patient.dob);
+//       const age =
+//         new Date().getFullYear() -
+//         dob.getFullYear() -
+//         (new Date().getMonth() < dob.getMonth() ||
+//         (new Date().getMonth() === dob.getMonth() &&
+//           new Date().getDate() < dob.getDate())
+//           ? 1
+//           : 0);
+//       return {
+//         _id: patient._id,
+//         fullname: patient.fullname,
+//         phone: patient.phonenumber,
+//         createdAt: patient.createdAt,
+//         gender: patient.gender,
+//         bloodgroup: patient.info.bloodgroup,
+//         age,
+//       };
+//     });
+
+//     // Count total patients for pagination
+//     const totalPatients = await Patient.countDocuments(filter);
+
+//     return res.json({
+//       patients: patientsWithAge,
+//       totalPatients,
+//       currentPage: page,
+//       totalPages: Math.ceil(totalPatients / limit),
+//     });
+//   } catch (error) {
+//     return res.json({ error: "Failed to fetch patients" }, { status: 500 });
+//   }
+// }
+
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const gender = url.searchParams.get("gender") || "all"; // Default to 'all'
+    const gender = url.searchParams.get("gender") || "all";
     const dateRange = url.searchParams.get("dateRange");
-    const sort = url.searchParams.get("sort") || "newest"; // Default to 'newest'
+    const sort = url.searchParams.get("sort") || "newest";
     const page = parseInt(url.searchParams.get("page") || "1", 10);
     const limit = parseInt(url.searchParams.get("limit") || "20", 10);
-    const search = url.searchParams.get("search") || ""; // Default to empty search string
+    const search = url.searchParams.get("search") || "";
 
     // Build query filter
     let filter: any = {};
@@ -24,9 +102,15 @@ export async function GET(request: NextRequest) {
 
     // Handle date range filtering
     if (dateRange) {
-      const [fromDate, toDate] = dateRange
+      const [fromDateStr, toDateStr] = dateRange
         .split(" - ")
-        .map((dateStr) => new Date(dateStr.trim()));
+        .map((dateStr) => dateStr.trim());
+      const fromDate = new Date(fromDateStr);
+      const toDate = new Date(toDateStr);
+
+      // Set the end of the "to" date to 23:59:59 to include the full day
+      toDate.setHours(23, 59, 59, 999);
+
       filter.createdAt = { $gte: fromDate, $lte: toDate };
     }
 
@@ -37,7 +121,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Handle sorting
-    const sortOrder = sort === "oldest" ? 1 : -1; // 1 for oldest to newest, -1 for newest to oldest
+    const sortOrder = sort === "oldest" ? 1 : -1;
 
     // Pagination
     const skip = (page - 1) * limit;
@@ -46,7 +130,7 @@ export async function GET(request: NextRequest) {
       .sort({ createdAt: sortOrder })
       .skip(skip)
       .limit(limit)
-      .select("_id fullname phonenumber createdAt gender info.bloodgroup dob"); // Explicitly include _id and other required fields
+      .select("_id fullname phonenumber createdAt gender info.bloodgroup dob");
 
     // Calculate age and format the response
     const patientsWithAge = patients.map((patient) => {

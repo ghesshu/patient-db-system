@@ -55,14 +55,6 @@ export const fetchTreatments = async ({
   return response.json();
 };
 
-// export const fetchTreatments = async () => {
-//   const response = await fetch("/api/treatment");
-//   if (!response.ok) {
-//     throw new Error("Failed to fetch campaigns");
-//   }
-//   return response.json();
-// };
-
 export const fetchPatients = async ({
   gender,
   dateRange,
@@ -133,3 +125,43 @@ export const fetchPatientById = async (id: string) => {
     throw error;
   }
 };
+
+export function formatDateString(dateStr: string): string {
+  const date = new Date(dateStr);
+
+  const day = date.getUTCDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getUTCFullYear();
+
+  // Determine the ordinal suffix
+  const ordinalSuffix = (n: number) => {
+    if (n > 3 && n < 21) return "th"; // Handle 11th, 12th, 13th
+    switch (n % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  return `${day}${ordinalSuffix(day)} ${month}, ${year}`;
+}
+
+export function formatTimeString(dateStr: string): string {
+  const date = new Date(dateStr);
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12; // Convert to 12-hour format
+  hours = hours ? hours : 12; // The hour '0' should be '12'
+
+  // Pad minutes with leading zero if necessary
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${hours}:${formattedMinutes} ${ampm}`;
+}

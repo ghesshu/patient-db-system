@@ -7,12 +7,12 @@ import { Slide, toast } from "react-toastify";
 import { useMutation, useQueryClient } from "react-query";
 
 interface FormValues {
-  fullName: string;
-  phoneNumber: string;
+  fullname: string;
+  phonenumber: string;
   email: string;
   gender: string;
-  emergencyContact: string;
-  dateOfBirth: string;
+  emergency: string;
+  dob: string;
   address: string;
 }
 
@@ -20,24 +20,25 @@ interface NewPatientProps {
   func?: any;
   load?: boolean;
   setLoad?: any;
+  router: any;
 }
 
-const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
+const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad, router }) => {
   const { inputs, handleChange, handleSubmit, errors } = useForm<FormValues>({
     defaultValues: {
-      fullName: "",
-      phoneNumber: "",
+      fullname: "",
+      phonenumber: "",
       email: "",
       gender: "",
-      emergencyContact: "",
-      dateOfBirth: "",
+      emergency: "",
+      dob: "",
       address: "",
     },
     validation: {
-      fullName: {
+      fullname: {
         required: true,
       },
-      phoneNumber: {
+      phonenumber: {
         required: true,
       },
       email: {
@@ -49,10 +50,10 @@ const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
       gender: {
         required: true,
       },
-      emergencyContact: {
+      emergency: {
         required: true,
       },
-      dateOfBirth: {
+      dob: {
         required: true,
       },
       address: {
@@ -60,11 +61,21 @@ const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
       },
     },
   });
+  const defaultFromDate = "2000-01-01";
+  const defaultToDate = new Date().toISOString().split("T")[0];
+  const dateRange = `${defaultFromDate} - ${defaultToDate}`;
+
+  const gender = "all";
+  const sort = "newest";
+  const page = 1;
+  const limit = "10";
+  const search = "";
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
     async (data: FormValues) => {
+      console.log(data);
       const res = await fetch(`/api/patient`, {
         method: "POST",
         headers: {
@@ -81,8 +92,17 @@ const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("patients");
+        queryClient.invalidateQueries([
+          "patients",
+          gender,
+          dateRange,
+          sort,
+          page,
+          limit,
+          search,
+        ]);
         toast.success("Patient created successfully");
+        router.back();
       },
       onError: () => {
         toast.error("Error creating patient", {
@@ -107,18 +127,18 @@ const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
           {/* Input Fields */}
           <Input
             label="Full Name"
-            name="fullName"
-            value={inputs.fullName}
+            name="fullname"
+            value={inputs.fullname}
             onChange={handleChange}
-            error={errors.fullName}
+            error={errors.fullname}
             placeholder="Enter full name"
           />
           <Input
             label="Phone Number"
-            name="phoneNumber"
-            value={inputs.phoneNumber}
+            name="phonenumber"
+            value={inputs.phonenumber}
             onChange={handleChange}
-            error={errors.phoneNumber}
+            error={errors.phonenumber}
             placeholder="Enter phone number"
           />
           <Input
@@ -145,19 +165,19 @@ const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
 
           <Input
             label="Emergency Contact"
-            name="emergencyContact"
-            value={inputs.emergencyContact}
+            name="emergency"
+            value={inputs.emergency}
             onChange={handleChange}
-            error={errors.emergencyContact}
+            error={errors.emergency}
             placeholder="Enter emergency contact"
           />
           <Input
             label="Date of Birth"
-            name="dateOfBirth"
+            name="dob"
             type="date"
-            value={inputs.dateOfBirth}
+            value={inputs.dob}
             onChange={handleChange}
-            error={errors.dateOfBirth}
+            error={errors.dob}
             placeholder="MM/DD/YYYY"
           />
           <Input
@@ -171,14 +191,14 @@ const NewPatient: React.FC<NewPatientProps> = ({ load, setLoad }) => {
         </div>
         {/* Action Buttons */}
         <div className="w-full flex flex-col gap-4 md:flex-row pt-4">
-          <Button
+          {/* <Button
             // onClick={() => setDialogOpen(false)}
             variant="outline"
             className="w-full h-[3.5rem] rounded-md text-red-600 shadow-none"
             type="button"
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
             disabled={load}
             type="submit"

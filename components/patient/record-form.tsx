@@ -23,7 +23,7 @@ interface MedDoc {
   medicine: Types.ObjectId;
   instruction: string;
   quantity: string;
-  dosage: "Morning" | "Afternoon" | "Evening";
+  // dosage: "Morning" | "Afternoon" | "Evening";
 }
 
 interface PatientRecordProps {
@@ -93,7 +93,7 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ load, setLoad, id }) => {
         medicine: newMedicine.medicine!,
         instruction: newMedicine.instruction!,
         quantity: newMedicine.quantity!,
-        dosage: newMedicine.dosage! as "Morning" | "Afternoon" | "Evening",
+        // dosage: newMedicine.dosage! as "Morning" | "Afternoon" | "Evening",
       },
     ];
 
@@ -173,11 +173,11 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ load, setLoad, id }) => {
           <h3 className="text-lg font-semibold">Medicine</h3>
           <table className="w-full border mt-2">
             <thead className="w-full">
-              <tr className="w-full grid grid-cols-5">
+              <tr className="w-full grid grid-cols-4">
                 <th className="text-left  border-r-2 p-1">Item</th>
                 <th className="text-left  border-r-2 p-1">Instruction</th>
                 <th className="text-left  border-r-2 p-1">Quantity</th>
-                <th className="text-left  border-r-2 p-1">Dosage</th>
+                {/* <th className="text-left  border-r-2 p-1">Dosage</th> */}
                 <th className="text-left  border-r-2 p-1">Actions</th>
               </tr>
             </thead>
@@ -190,12 +190,12 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ load, setLoad, id }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.3 }}
-                    className="w-full grid grid-cols-5"
+                    className="w-full grid grid-cols-4"
                   >
                     <td className="w-full border-r-2 p-1 border-b-2">
                       {
                         data?.medicine.find(
-                          (med) => med._id === medicine.medicine.toString()
+                          (med) => med._id === medicine?.medicine?.toString()
                         )?.name
                       }
                     </td>
@@ -205,9 +205,9 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ load, setLoad, id }) => {
                     <td className="w-full border-r-2 p-1 border-b-2">
                       {medicine.quantity}
                     </td>
-                    <td className="w-full border-r-2 p-1 border-b-2">
+                    {/* <td className="w-full border-r-2 p-1 border-b-2">
                       {medicine.dosage}
-                    </td>
+                    </td> */}
                     <td className="w-full border-r-2 p-1 border-b-2">
                       <button
                         type="button"
@@ -300,7 +300,7 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ load, setLoad, id }) => {
                   setNewMedicine({ ...newMedicine, quantity: e.target.value })
                 }
               />
-              <Input
+              {/* <Input
                 label="Dosage"
                 name="dosage"
                 type="select"
@@ -312,7 +312,7 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ load, setLoad, id }) => {
                 onChange={(e: any) =>
                   setNewMedicine({ ...newMedicine, dosage: e.target.value })
                 }
-              />
+              /> */}
               <div className="flex justify-end gap-4 mt-6">
                 <Button
                   variant="outline"

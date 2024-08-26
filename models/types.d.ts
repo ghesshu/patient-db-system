@@ -25,7 +25,7 @@ interface MedDoc {
   medicine: Types.ObjectId;
   instruction: string;
   quantity: string;
-  dosage: "Morning" | "Afternoon" | "Evening";
+  // dosage: "Morning" | "Afternoon" | "Evening";
 }
 
 export interface RecordDoc {

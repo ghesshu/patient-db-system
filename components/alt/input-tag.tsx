@@ -8,7 +8,14 @@ import { RiErrorWarningFill } from "react-icons/ri";
 
 interface InputProps {
   label: string;
-  type?: "text" | "password" | "textarea" | "number" | "select" | "date"; // Added "select" type
+  type?:
+    | "text"
+    | "password"
+    | "textarea"
+    | "number"
+    | "select"
+    | "date"
+    | "email"; // Added "select" type
   value?: string | number;
   onChange?: any;
   error?: string;

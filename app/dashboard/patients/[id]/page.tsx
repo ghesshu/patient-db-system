@@ -2,7 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams, useRouter } from "next/navigation";
-import { fetchPatientById } from "@/lib/api";
+import {
+  fetchPatientById,
+  formatDateString,
+  formatTimeString,
+} from "@/lib/api";
 import PageContainer from "@/components/layout/page-container";
 import { Button } from "@/components/ui/button";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -13,10 +17,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import HealthForm from "@/components/patient/health-form";
 import PatientForm from "@/components/patient/patient-form";
 import PatientRecord from "@/components/patient/record-form";
+import { RiMore2Line } from "react-icons/ri";
+import Popup from "@/components/alt/popup";
+import RecordView from "@/components/view/records";
 
 const Page = () => {
   const { id } = useParams();
   const router = useRouter();
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const [load, setLoad] = useState(false);
   const [load1, setLoad1] = useState(false);
@@ -124,6 +132,7 @@ const Page = () => {
           </div>
 
           <div className="w-full bg-white p-4 rounded-xl overflow-x-hidden dark:bg-neutral-900">
+            <h2 className="font-bold text-base pb-6">Records</h2>
             <AnimatePresence mode="wait">
               {selectedView === "medicalRecords" && (
                 <motion.div
@@ -132,7 +141,44 @@ const Page = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.5 }}
-                ></motion.div>
+                  className="space-y-4"
+                >
+                  {data?.records?.map((data: any, index: number) => (
+                    <div
+                      className="h-[4rem] w-full bg-neutral-100 dark:bg-neutral-800 rounded-lg flex justify-between items-center p-5"
+                      key={index}
+                    >
+                      <div className="flex gap-1 items-end">
+                        <h2>{formatDateString(data.createdAt)}</h2>
+                        <h2 className="text-xs font-bold text-green-600">
+                          {formatTimeString(data.createdAt)}
+                        </h2>
+                      </div>
+
+                      <Popup
+                        data={{
+                          dialogOpen,
+                          setDialogOpen,
+                          title: "Record",
+                          content: (
+                            <RecordView
+                              data={data}
+                              dialogOpen={dialogOpen}
+                              setDialogOpen={setDialogOpen}
+                            />
+                          ),
+                        }}
+                      />
+
+                      <button
+                        onClick={() => setDialogOpen(true)}
+                        className="text-xl h-[2rem] w-[2rem] flex items-center justify-center hover:text-primary bg-neutral-200 rounded dark:bg-neutral-800"
+                      >
+                        <RiMore2Line />
+                      </button>
+                    </div>
+                  ))}
+                </motion.div>
               )}
               {selectedView === "patientInformation" && (
                 <motion.div

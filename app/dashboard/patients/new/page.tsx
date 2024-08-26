@@ -8,6 +8,7 @@ import NewPatient from "@/components/new/new-patient";
 
 const Page = () => {
   const router = useRouter(); // Initialize the useRouter hook
+  const [load, setLoad] = React.useState(false); // Initialize the load state
 
   return (
     <div>
@@ -22,7 +23,7 @@ const Page = () => {
           <h1 className="text-2xl">New Patient</h1>
         </div>
 
-        <NewPatient />
+        <NewPatient load={load} setLoad={setLoad} router={router} />
       </PageContainer>
     </div>
   );

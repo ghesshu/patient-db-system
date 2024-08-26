@@ -10,6 +10,7 @@ import "./globals.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactQueryProvider from "@/contexts/query-context";
+import NextAuthProvider from "@/contexts/nextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Use getServerSession to retrieve the session
-  const session = await getServerSession(authConfig);
+  // // Use getServerSession to retrieve the session
+  // const session = await getServerSession(authConfig);
 
   return (
     <html lang="en">
@@ -32,8 +33,9 @@ export default async function RootLayout({
         className={`${inter.className} overflow-hidden `} // Ensure consistent class names
         suppressHydrationWarning={true} // Helps avoid hydration mismatches
       >
-        <NextTopLoader showSpinner={false} />
-        <Providers session={session}>
+        <NextAuthProvider>
+          <NextTopLoader showSpinner={false} />
+          {/* <Providers session={session}> */}
           <ToastContainer
             position="bottom-left"
             autoClose={1500}
@@ -46,10 +48,9 @@ export default async function RootLayout({
             pauseOnHover
             theme="light"
           />
-          <ReactQueryProvider>
-            {children}
-          </ReactQueryProvider>
-        </Providers>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+          {/* </Providers> */}
+        </NextAuthProvider>
       </body>
     </html>
   );
