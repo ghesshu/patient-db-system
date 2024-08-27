@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import UserAuthForm from "@/components/forms/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Authlogin from "@/components/alt/authlogin";
@@ -53,7 +52,7 @@ export default function AuthenticationPage() {
               Enter your email and password below
             </p>
           </div>
-          {/* <UserAuthForm /> */}
+
           <Authlogin />
         </div>
       </div>
