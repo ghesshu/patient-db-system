@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { AreaGraph } from "@/components/charts/area-graph";
 import { BarGraph } from "@/components/charts/bar-graph";
 import { PieGraph } from "@/components/charts/pie-graph";
-import { CalendarDateRangePicker } from "@/components/date-range-picker";
+// import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import PageContainer from "@/components/layout/page-container";
 import { RecentPatients } from "@/components/recent-patient";
 
@@ -56,7 +56,7 @@ export default function Page() {
             Hi, Welcome back 👋
           </h2>
           <div className="hidden items-center space-x-2 md:flex">
-            <CalendarDateRangePicker />
+            {/* <CalendarDateRangePicker /> */}
             {/* <Button>Download</Button> */}
           </div>
         </div>
