@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const page = () => {
+const Page = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [dialogOpenTwo, setDialogOpenTwo] = React.useState(false);
   const [load, setLoad] = React.useState(false);
@@ -259,4 +259,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

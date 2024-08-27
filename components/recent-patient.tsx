@@ -7,7 +7,7 @@ export function RecentPatients({ data }: { data: any }) {
   return (
     <div className="space-y-8">
       {data?.map((data: any, index: number) => (
-        <div className="flex items-center">
+        <div key={index} className="flex items-center">
           <Avatar className="h-9 w-9">
             <AvatarImage src="/avatars/01.png" alt="Avatar" />
             <AvatarFallback>{getText(data?.fullname)}</AvatarFallback>
